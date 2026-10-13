@@ -1,0 +1,24 @@
+{% macro header(title, sub) %}
+<header class="hdr"><div class="hdr-top"><div class="logo">ZPCH</div>
+<div class="hdr-text"><h1>{{ title }}</h1><span class="sub">{{ sub }}</span></div>
+</div></header>
+<div class="stripe"></div>
+{% endmacro %}
+
+{% macro when(r) %}<div class="when"><span class="day">{{ r.day }}</span><span class="date">{{ r.date }}</span><span class="time">{{ r.time }}</span></div>{% endmacro %}
+
+{% macro action(r) %}
+{% if r.action %}{% set kind, ref = r.action %}
+{% if kind == 'request' %}<a class="btn ghost" href="{{ url_for('main.request_swap', event_id=ref) }}">Ruilen</a>
+{% elif kind == 'take' %}<form class="inline" method="post" action="{{ url_for('main.take_swap', swap_id=ref) }}"><button class="btn">Ik neem het over</button></form>
+{% elif kind == 'withdraw' %}<form class="inline" method="post" action="{{ url_for('main.withdraw_swap', swap_id=ref) }}"><button class="btn ghost">Intrekken</button></form>
+{% endif %}{% endif %}
+{% endmacro %}
+
+{% macro row(r, with_action=true) %}
+<div class="row {{ r.cls }}">
+{{ when(r) }}
+<div class="what"><span class="title">{{ r.title }}</span><span class="hosts">{{ r.hosts }}</span><span class="status"><span class="dot {{ r.dot }}"></span>{{ r.status }}</span></div>
+{% if with_action %}{{ action(r) }}{% endif %}
+</div>
+{% endmacro %}

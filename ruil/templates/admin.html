@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% from "_macros.html" import when %}
+{% block title %}Beheer{% endblock %}
+{% block nav %}{% endblock %}
+{% block header %}
+<header class="hdr" style="padding-top:10px;gap:6px">
+<a class="link" href="{{ url_for('main.week') }}" style="padding:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Weekoverzicht</a>
+<h1 style="font-size:26px">Beheer</h1>
+<span class="sub">{{ todo|length }} ruil{{ 'en' if todo|length != 1 }} te verwerken in Spond · {{ escalated|length }} geëscaleerd</span>
+</header>
+<div class="stripe"></div>
+{% endblock %}
+{% block main %}
+{% if last_error %}<p class="flash error">Laatste synchronisatie mislukt: {{ last_error }}</p>{% endif %}
+<h2 class="sec">Verwerken in Spond</h2>
+{% for r in todo %}
+<div class="row amber">
+{{ when(r) }}
+<div class="what"><span class="title">{{ r.title }}</span><span class="change">{{ r.change }}</span>
+<span class="meta">{% if r.late %}<span class="flag">Te laat</span>{% else %}<span class="dot a"></span>{% endif %}<span>{{ r.meta }}</span></span></div>
+{% if demo %}<form class="inline" method="post" action="{{ url_for('main.demo_process', swap_id=r.swap_id) }}"><button class="btn">Zet in Spond (demo)</button></form>
+{% else %}<a class="btn" href="{{ r.spond_url }}" target="_blank" rel="noopener">Open in Spond</a>{% endif %}
+</div>
+{% else %}<p class="empty">Niets te verwerken.</p>{% endfor %}
+<h2 class="sec">Geëscaleerd: nog niemand gevonden</h2>
+{% for r in escalated %}
+<div class="row red">
+{{ when(r) }}
+<div class="what"><span class="title">{{ r.title }}</span><span class="change">{{ r.change }}</span><span class="meta"><span class="dot r"></span><span>{{ r.meta }}</span></span></div>
+<form class="inline" method="post" action="{{ url_for('main.cancel_swap', swap_id=r.swap_id) }}" onsubmit="return confirm('Verzoek annuleren?')"><button class="btn ghost">Annuleren</button></form>
+</div>
+{% else %}<p class="empty">Geen geëscaleerde verzoeken.</p>{% endfor %}
+<div class="info">Wijzig de host van de training in Spond. De volgende synchronisatie ziet de nieuwe host en zet de ruil op verwerkt; hier hoef je niets af te vinken.</div>
+<form class="form" method="post" action="{{ url_for('main.admin_sync') }}" style="padding-top:0"><button class="btn ghost block">Nu synchroniseren</button></form>
+<p class="foot" style="padding-top:0">Laatste synchronisatie {{ synced }}{% if next_sync %} · volgende vanaf {{ next_sync.strftime('%H:%M') }}{% endif %}</p>
+{% endblock %}

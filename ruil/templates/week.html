@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% from "_macros.html" import row %}
+{% block title %}Week {{ week_no }}{% endblock %}
+{% block header %}
+<header class="hdr">
+<div class="hdr-top"><div class="logo">ZPCH</div>
+<div class="hdr-text"><span style="font:700 22px/1.1 var(--display)">Host-ruilen</span><span class="sub">Ingelogd als {{ g.user.name }}</span></div>
+{% if g.user.admin %}<a class="link" href="{{ url_for('main.admin') }}">Beheer</a>{% endif %}
+<form class="inline" method="post" action="{{ url_for('main.logout') }}"><button class="link" style="background:none;border:0;color:#fff;font:700 14px 'Atkinson Hyperlegible',sans-serif;min-height:44px;cursor:pointer">Uit</button></form>
+</div>
+<div class="weeknav">
+<a href="{{ url_for('main.week', w=prev_w) }}" aria-label="Vorige week"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+<div class="label"><b>Week {{ week_no }}</b><span class="sub">{{ week_range }}</span></div>
+<a href="{{ url_for('main.week', w=next_w) }}" aria-label="Volgende week"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+</div>
+</header>
+<div class="stripe"></div>
+<div class="legend"><span><span class="dot g"></span>Ingeroosterd</span><span><span class="dot r"></span>Ruil gevraagd</span><span><span class="dot a"></span>Nog niet in Spond</span></div>
+{% endblock %}
+{% block main %}
+{% for r in rows %}{{ row(r) }}{% else %}<p class="empty">Geen trainingen deze week.</p>{% endfor %}
+<p class="foot">Gesynchroniseerd met Spond {{ synced }}</p>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% from "_macros.html" import row, header %}
+{% block title %}Ruil aanvragen{% endblock %}
+{% block header %}{{ header("Ruil aanvragen", "Iemand anders neemt je training over") }}{% endblock %}
+{% block main %}
+{{ row(r, false) }}
+<form class="form" method="post">
+<div class="field"><label for="note">Reden (optioneel)</label><textarea id="note" name="note" maxlength="140" rows="2" placeholder="Bijv. ‘ouderavond’"></textarea></div>
+<button class="btn block">Ruil aanvragen</button>
+<a class="btn ghost block" href="{{ url_for('main.week') }}">Annuleren</a>
+<p class="hint">Je verzoek komt bij de open ruilverzoeken. Tot iemand het overneemt, blijf jij de host.</p>
+</form>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% from "_macros.html" import header, when %}
+{% block title %}Open ruilverzoeken{% endblock %}
+{% block header %}{{ header("Open ruilverzoeken", rows|length ~ " open · eerstvolgende bovenaan") }}{% endblock %}
+{% block main %}
+<p class="intro">Overnemen is weggeven: de training wordt van jou, je hoeft niets terug te doen.</p>
+{% for r in rows %}
+<div class="row red">
+{{ when(r) }}
+<div class="what"><span class="title">{{ r.title }}</span><span class="hosts">Gevraagd door {{ r.by }}</span>
+{% if r.note %}<span class="note">‘{{ r.note }}’</span>{% endif %}
+<span class="status">{% if r.escalated %}<span class="flag">Geëscaleerd</span>{% else %}<span class="dot r"></span>{% endif %}{{ r.when }}</span></div>
+{% if r.mine %}<span class="mine-label">Jouw verzoek</span>
+{% elif linked %}<form class="inline" method="post" action="{{ url_for('main.take_swap', swap_id=r.swap_id) }}"><button class="btn">Ik neem het over</button></form>{% endif %}
+</div>
+{% else %}<p class="empty">Geen open ruilverzoeken. 🎉</p>{% endfor %}
+{% endblock %}

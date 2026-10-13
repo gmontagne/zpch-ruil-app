@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% from "_macros.html" import row, header %}
+{% block title %}Mijn trainingen{% endblock %}
+{% block header %}{{ header("Mijn trainingen", "Komende trainingen, alle weken") }}{% endblock %}
+{% block main %}
+{% for label, rows in months %}
+<h2 class="sec">{{ label }}</h2>
+{% for r in rows %}{{ row(r) }}{% endfor %}
+{% else %}<p class="empty">Je hebt geen komende trainingen.</p>{% endfor %}
+<p class="foot">De komende {{ weeks }} weken uit Spond. Gesynchroniseerd {{ synced }}.</p>
+{% endblock %}

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#00692A">
+<title>{% block title %}Host-ruilen{% endblock %} · ZPCH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Barlow+Semi+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="app">
+{% block header %}{% endblock %}
+{% if demo is defined and demo %}<div class="banner">Demomodus: geen Spond-koppeling, voorbeelddata.</div>{% endif %}
+{% if linked is defined and not linked %}<div class="banner">Je account is nog niet gekoppeld aan een Spond-lid. Vraag een beheerder.</div>{% endif %}
+{% for cat, msg in get_flashed_messages(with_categories=true) %}<p class="flash {{ cat }}" role="status">{{ msg }}</p>{% endfor %}
+<main>{% block main %}{% endblock %}</main>
+{% block nav %}{% include "_nav.html" %}{% endblock %}
+</div>
+</body>
+</html>

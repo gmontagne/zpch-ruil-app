@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Inloggen{% endblock %}
+{% block nav %}{% endblock %}
+{% block main %}
+<div class="hero"><div class="logo">ZPCH</div><h1>Host-ruilen</h1>
+<p>Vraag een ruil aan, neem trainingen over en zie wat er al in Spond staat.</p></div>
+<div class="stripe thick"></div>
+<form class="form" method="post">
+{% if error %}<p class="flash error" role="alert" style="border-radius:10px">{{ error }}</p>{% endif %}
+<div class="field"><label for="u">Gebruikersnaam</label><input id="u" name="username" type="text" autocomplete="username" autocapitalize="none" required value="{{ request.form.username }}"></div>
+<div class="field"><label for="p">Wachtwoord</label><input id="p" name="password" type="password" autocomplete="current-password" required></div>
+<label class="check"><input type="checkbox" name="remember" checked>30 dagen ingelogd blijven</label>
+<button class="btn block">Inloggen</button>
+<p class="hint">Accounts worden door een beheerder aangemaakt. Wachtwoord vergeten? Vraag een beheerder om het te resetten.</p>
+</form>
+{% endblock %}
