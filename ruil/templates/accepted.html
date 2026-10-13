@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% from "_macros.html" import row, header %}
+{% block title %}Overgenomen{% endblock %}
+{% block header %}{{ header("Mijn overgenomen trainingen", "Trainingen die jij hebt overgenomen") }}{% endblock %}
+{% block main %}
+{% if waiting %}<h2 class="sec">Wacht op Spond</h2>{% for r in waiting %}{{ row(r, false) }}{% endfor %}{% endif %}
+{% if done %}<h2 class="sec">Verwerkt</h2>{% for r in done %}{{ row(r, false) }}{% endfor %}{% endif %}
+{% if not waiting and not done %}<p class="empty">Je hebt nog geen trainingen overgenomen.</p>{% endif %}
+<div class="info">Een beheerder past de host aan in Spond. Na de volgende synchronisatie, uiterlijk 30 minuten later, wordt de regel groen.</div>
+{% endblock %}
